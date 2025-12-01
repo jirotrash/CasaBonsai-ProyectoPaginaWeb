@@ -38,8 +38,22 @@
                     <li class="nav-item">
                         <a class="nav-link" href="scr/pages/servicios.html">Servicios</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="scr/pages/productos.php">Productos</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="/casabonsai/scr/pages/productos.php" id="productosDropdown" role="button" aria-expanded="false" aria-controls="productosMenu">Productos <span class="dropdown-caret" aria-hidden="true"></span></a>
+                        <ul id="productosMenu" class="dropdown-menu" aria-labelledby="productosDropdown">
+                            <li><a class="dropdown-item" href="scr/pages/catalogos/alimentacion.php">Alimentación</a></li>
+                            <li><a class="dropdown-item" href="scr/pages/catalogos/complementos.php">Complementos</a></li>
+                            <li><a class="dropdown-item" href="scr/pages/catalogos/cuidado-personal.php">Cuidado personal</a></li>
+                            <li><a class="dropdown-item" href="scr/pages/catalogos/higiene.php">Higiene</a></li>
+                            <li><a class="dropdown-item" href="scr/pages/catalogos/hogar.php">Hogar</a></li>
+                            <li><a class="dropdown-item" href="scr/pages/catalogos/movilidad.php">Movilidad</a></li>
+                            <li><a class="dropdown-item" href="scr/pages/catalogos/ocio.php">Ocio</a></li>
+                            <li><a class="dropdown-item" href="scr/pages/catalogos/ortopedia.php">Ortopedia</a></li>
+                            <li><a class="dropdown-item" href="scr/pages/catalogos/rehabilitacion.php">Rehabilitación</a></li>
+                            <li><a class="dropdown-item" href="scr/pages/catalogos/seguridad.php">Seguridad</a></li>
+                            <li><a class="dropdown-item" href="scr/pages/catalogos/tecnologia.php">Tecnología</a></li>
+                            <li><a class="dropdown-item" href="scr/pages/catalogos/vestimenta.php">Vestimenta</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="scr/pages/contacto.html">Contacto</a>
@@ -47,10 +61,8 @@
                     <li class="nav-item">
                         <a class="nav-link" href="scr/pages/nosotros.html">Nosotros</a>
                     </li>
-                    
-                    
-                </ul>
                 
+                </ul>
                 <ul class="navbar-nav nav-auth-mobile">
                     <li class="nav-item"><a href="#" class="nav-link open-login">Ingresar</a></li>
                     <li class="nav-item"><a href="#" class="nav-link open-register">Registrarse</a></li>
@@ -155,7 +167,7 @@
             <p class="muted">Contacta con nosotros para una asesoría personalizada o solicita un producto del catálogo.</p>
             <div style="margin-top:12px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
                 <a class="btn btn-buy" href="scr/pages/contacto.html">Solicitar atención</a>
-                            <a class="btn btn-outline" href="scr/pages/productos.php">Ver catálogo</a>
+                            <a class="btn btn-outline" href="/casabonsai/scr/pages/productos.php">Ver catálogo</a>
             </div>
         </section>
 
@@ -206,6 +218,7 @@
     <script src="scr/scripts/carousel-autoplay.js" defer></script>
         <script src="scr/scripts/session-check.js" defer></script>
     <script src="scr/scripts/nav-toggle.js" defer></script>
+    <script src="scr/scripts/dropdown.js" defer></script>
         <script src="scr/scripts/auth.js" defer></script>
 
         <div id="login-modal" class="modal" aria-hidden="true">

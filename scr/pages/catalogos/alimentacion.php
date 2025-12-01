@@ -1,53 +1,61 @@
 <?php
-// Página de productos dinámica: carga desde la tabla `producto`
-require __DIR__ . '/../../conn.php';
+require __DIR__ . '/../../../conn.php';
 
-// Obtener productos activos
-try {
-    $stmt = $pdo->prepare("SELECT * FROM producto WHERE activo = 1 ORDER BY creado_at DESC LIMIT 200");
-    $stmt->execute();
-    $productos = $stmt->fetchAll();
-} catch (Exception $e) {
-    $productos = [];
-}
-
-// Obtener categorías existentes para el combobox (leer `categoria_producto`)
-$cats = [];
-try {
-  $cstmt = $pdo->prepare("SELECT nombre FROM categoria_producto ORDER BY nombre");
-  $cstmt->execute();
-  $cats = $cstmt->fetchAll(PDO::FETCH_COLUMN);
-} catch (Exception $ex) { $cats = []; }
-
+function e($v){ return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
 function product_image_src($imagen){
-    // imagen puede ser: data-uri, URL absoluta (http/https), ruta relativa guardada en DB, o nombre de archivo
-    if (empty($imagen)) return '../resources/images/placeholder.png';
+    if (empty($imagen)) return '/casabonsai/scr/resources/images/placeholder.png';
     $img = trim($imagen);
     if (strpos($img, 'data:') === 0) return $img;
     if (preg_match('#^https?://#i', $img)) return $img;
-    if (strpos($img, '/') === 0) return $img; // ya es ruta absoluta
-    // fallback: asumir nombre de archivo en uploads
-  return '/casabonsai/scr/resources/images/uploads/' . rawurlencode($img);
+    if (strpos($img, '/') === 0) return $img;
+    return '/casabonsai/scr/resources/images/uploads/' . rawurlencode($img);
 }
 
-function money($v){
-    if ($v === null || $v === '' || $v == 0) return null;
-    return '$' . number_format((float)$v, 0, ',', '.');
+$productos = [];
+$last_error = null;
+try{
+      // La base de datos usa tablas separadas para categorías: `categoria_producto` y `producto_categoria`.
+      // Hacemos JOIN para obtener productos que pertenecen a la categoría "Alimentación" (con o sin tilde) o con slug 'alimentacion'.
+      $sql = "SELECT p.* FROM producto p
+        JOIN producto_categoria pc ON pc.producto_id = p.id_producto
+        JOIN categoria_producto c ON c.id_categoria = pc.categoria_id
+        WHERE p.activo = 1 AND (c.nombre = :c1 OR c.nombre = :c2 OR c.slug = :slug)
+        ORDER BY p.creado_at DESC LIMIT 200";
+      $stmt = $pdo->prepare($sql);
+      $stmt->execute([':c1' => 'Alimentación', ':c2' => 'Alimentacion', ':slug' => 'alimentacion']);
+      $productos = $stmt->fetchAll();
+}catch(Exception $ex){
+  // Guardamos el mensaje para depuración visible en la página
+  $last_error = $ex->getMessage();
+  $productos = [];
 }
-?><!doctype html>
+
+// Si no hay resultados en DB, mostrar ejemplos estáticos de alimentos para adulto mayor
+if (empty($productos)){
+    $productos = [
+        ['nombre'=>'Puré Nutritivo de Vegetales','descripcion'=>'Puré suave, alto en fibra y proteínas, fácil de masticar y digerir.','precio'=>'120','imagen'=>'/casabonsai/scr/resources/images/placeholder.png'],
+        ['nombre'=>'Galletas Blandas Fortificadas','descripcion'=>'Galletas ricas en calcio y vitaminas, textura suave para personas con masticación limitada.','precio'=>'80','imagen'=>'/casabonsai/scr/resources/images/placeholder.png'],
+        ['nombre'=>'Batido Proteico (500ml)','descripcion'=>'Bebida nutricional balanceada para recuperación y aporte energético.','precio'=>'95','imagen'=>'/casabonsai/scr/resources/images/placeholder.png'],
+        ['nombre'=>'Sopa Cremosa de Pollo','descripcion'=>'Sopa en presentación cremosa, baja en sodio y fácil de consumir.','precio'=>'140','imagen'=>'/casabonsai/scr/resources/images/placeholder.png']
+    ];
+}
+// Debug: número de productos obtenidos (temporal)
+$productos_count = is_array($productos) ? count($productos) : 0;
+?>
+<!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Productos - Casa Bonsái</title>
-  <link rel="stylesheet" href="../styles/styles.css">
-  <meta name="description" content="Catálogo de productos para adultos mayores: pañales, bastones, ayudas técnicas y solicitud de personal.">
+  <title>Alimentación - Casa Bonsái</title>
+  <link rel="stylesheet" href="../../styles/styles.css">
+  <meta name="description" content="Productos de alimentación para adultos mayores: alimentos suaves, fortificados y de fácil consumo.">
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="../../index.html">
-        <img src="../resources/images/logo.png" alt="Casa Bonsái" class="navbar-logo">
+      <a class="navbar-brand" href="../../../index.html">
+        <img src="../../resources/images/logo.png" alt="Casa Bonsái" class="navbar-logo">
         <span class="brand-text">Casa Bonsái</span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,21 +64,21 @@ function money($v){
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item"><a class="nav-link" href="servicios.html">Servicios</a></li>
-          <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="productos.php" id="productosDropdown" role="button" aria-expanded="false" aria-controls="productosMenu">Productos <span class="dropdown-caret" aria-hidden="true"></span></a>
+            <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="/casabonsai/scr/pages/productos.php" id="productosDropdown" role="button" aria-expanded="false" aria-controls="productosMenu">Productos <span class="dropdown-caret" aria-hidden="true"></span></a>
                         <ul id="productosMenu" class="dropdown-menu" aria-labelledby="productosDropdown">
-                            <li><a class="dropdown-item" href="catalogos/alimentacion.php">Alimentación</a></li>
-                            <li><a class="dropdown-item" href="catalogos/complementos.php">Complementos</a></li>
-                            <li><a class="dropdown-item" href="catalogos/cuidado-personal.php">Cuidado personal</a></li>
-                            <li><a class="dropdown-item" href="catalogos/higiene.php">Higiene</a></li>
-                            <li><a class="dropdown-item" href="catalogos/hogar.php">Hogar</a></li>
-                            <li><a class="dropdown-item" href="catalogos/movilidad.php">Movilidad</a></li>
-                            <li><a class="dropdown-item" href="catalogos/ocio.php">Ocio</a></li>
-                            <li><a class="dropdown-item" href="catalogos/ortopedia.php">Ortopedia</a></li>
-                            <li><a class="dropdown-item" href="catalogos/rehabilitacion.php">Rehabilitación</a></li>
-                            <li><a class="dropdown-item" href="catalogos/seguridad.php">Seguridad</a></li>
-                            <li><a class="dropdown-item" href="catalogos/tecnologia.php">Tecnología</a></li>
-                            <li><a class="dropdown-item" href="catalogos/vestimenta.php">Vestimenta</a></li>
+                            <li><a class="dropdown-item" href="alimentacion.php">Alimentación</a></li>
+                            <li><a class="dropdown-item" href="complementos.php">Complementos</a></li>
+                            <li><a class="dropdown-item" href="cuidado-personal.php">Cuidado personal</a></li>
+                            <li><a class="dropdown-item" href="higiene.php">Higiene</a></li>
+                            <li><a class="dropdown-item" href="hogar.php">Hogar</a></li>
+                            <li><a class="dropdown-item" href="movilidad.php">Movilidad</a></li>
+                            <li><a class="dropdown-item" href="ocio.php">Ocio</a></li>
+                            <li><a class="dropdown-item" href="ortopedia.php">Ortopedia</a></li>
+                            <li><a class="dropdown-item" href="rehabilitacion.php">Rehabilitación</a></li>
+                            <li><a class="dropdown-item" href="seguridad.php">Seguridad</a></li>
+                            <li><a class="dropdown-item" href="tecnologia.php">Tecnología</a></li>
+                            <li><a class="dropdown-item" href="vestimenta.php">Vestimenta</a></li>
                         </ul>
                     </li>
           <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
@@ -89,75 +97,43 @@ function money($v){
     </div>
   </nav>
 
-  <main>
-    <section class="page-hero small-hero">
-      <div class="container">
-        <h1>Productos</h1>
-        <p class="lead">Pañales, bastones, ayudas técnicas y servicios de personal. Navega nuestro catálogo y solicita lo que necesites.</p>
-        <?php
-          // Obtener categorías existentes para el combobox
-          $cats = [];
-          try {
-            $cstmt = $pdo->prepare("SELECT DISTINCT categoria FROM producto WHERE categoria IS NOT NULL AND categoria != '' ORDER BY categoria");
-            $cstmt->execute();
-            $cats = $cstmt->fetchAll(PDO::FETCH_COLUMN);
-          } catch (Exception $ex) { $cats = []; }
-        ?>
-        
-      </div>
-    </section>
 
-    <section class="container" aria-label="Catálogo de productos">
+      <h1>Alimentación</h1>
+      <p class="lead">Alimentos pensados para adultos mayores: fácil masticación, alto valor nutricional y presentación práctica.</p>
+    </div>
+  </header>
 
-      <div class="products-list" aria-label="Lista de productos">
+  <?php if (!empty($last_error) || $productos_count === 0): ?>
+    <div style="background:#fff3cd;border:1px solid #ffeeba;padding:12px;margin:12px auto;max-width:1100px;border-radius:6px;color:#856404">
+      <strong>Depuración:</strong>
+      <div>Productos encontrados: <strong><?php echo (int)$productos_count; ?></strong></div>
+      <?php if (!empty($last_error)): ?><div>Error de consulta: <code><?php echo htmlspecialchars($last_error,ENT_QUOTES,'UTF-8'); ?></code></div><?php endif; ?>
+      <div style="margin-top:6px;font-size:0.95em;color:#6c757d">Si el conteo es 0 y no hay error, la página mostrará ejemplos estáticos.</div>
+    </div>
+  <?php endif; ?>
 
-<?php foreach($productos as $p):
-    $img = product_image_src($p['imagen'] ?? '');
-    $price = money($p['precio'] ?? null);
-    $category = 'general';
-    // si existe campo categoría en la fila úselo (compatibilidad futura)
-    if (!empty($p['categoria'])) $category = $p['categoria'];
-?>
-      <article class="product-row" data-category="<?php echo e($category); ?>">
-        <div class="product-thumb">
-          <img src="<?php echo e($img); ?>" alt="<?php echo e($p['nombre']); ?>">
+  <main class="container">
+    <section class="products-grid" aria-label="Productos de alimentación">
+      <?php foreach($productos as $p):
+        $nombre = $p['nombre'] ?? $p['titulo'] ?? 'Producto';
+        $desc = $p['descripcion'] ?? $p['descripcion_corta'] ?? '';
+        $precio = $p['precio'] ?? null;
+        $img = product_image_src($p['imagen'] ?? ($p['image'] ?? ''));
+      ?>
+      <article class="product-card">
+        <div class="product-media">
+          <img src="<?php echo e($img); ?>" alt="<?php echo e($nombre); ?>">
         </div>
-        <div class="product-info">
-          <h3><?php echo e($p['nombre']); ?></h3>
-          <p class="muted"><?php echo e($p['descripcion']); ?></p>
-          <div class="price-row">
-            <?php if($price): ?>
-              <span class="price-sale"><?php echo e($price); ?></span>
-            <?php else: ?>
-              <span class="product-price">Precio a consultar</span>
-            <?php endif; ?>
-          </div>
-          <div class="actions-row">
-            <button class="btn btn-buy open-modal" data-product="<?php echo e($p['nombre']); ?>">Solicitar</button>
-          </div>
+        <div class="product-body">
+          <h3 class="product-title"><?php echo e($nombre); ?></h3>
+          <p class="product-desc"><?php echo e($desc); ?></p>
+          <?php if ($precio): ?>
+            <div class="product-price"><?php echo '$' . number_format((float)$precio,0,',','.'); ?></div>
+          <?php endif; ?>
+          <div style="margin-top:8px"><button class="btn btn-success btn-sm">Solicitar</button></div>
         </div>
       </article>
-<?php endforeach; ?>
-
-      </div>
-        
-      <div id="product-modal" class="modal" aria-hidden="true">
-        <div class="modal-dialog" role="dialog" aria-modal="true">
-          <button class="modal-close" aria-label="Cerrar">×</button>
-          <h2 id="modal-title">Solicitar</h2>
-          <form id="modal-form">
-            <input type="hidden" name="product" id="modal-product">
-            <label>Nombre completo<br><input name="name" required></label>
-            <label>Teléfono o celular<br><input name="phone" required></label>
-            <label>Mensaje / Detalles<br><textarea name="message" rows="4"></textarea></label>
-            <div class="buttons-row">
-              <button class="btn btn-primary" type="submit">Enviar solicitud</button>
-              <button class="btn btn-outline form-cancel" type="button">Cancelar</button>
-            </div>
-          </form>
-        </div>
-      </div>
-
+      <?php endforeach; ?>
     </section>
   </main>
 

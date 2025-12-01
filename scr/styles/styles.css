@@ -563,3 +563,32 @@ img{max-width:100%;height:auto;display:block}
   .resident-card .card-media img{height:120px}
   .card-body{padding:10px}
 }
+
+/* Dropdown submenu styles (estilo verde, animación y adaptabilidad móvil) */
+.nav-item.dropdown{position:relative}
+.nav-link.dropdown-toggle{display:inline-flex;align-items:center;gap:8px}
+.dropdown-caret{display:inline-block;width:8px;height:8px;border-right:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(45deg);margin-left:6px}
+.dropdown-menu{position:absolute;top:100%;left:0;min-width:220px;padding:8px;border-radius:10px;background:#0b7a44;color:#fff;box-shadow:0 10px 30px rgba(11,122,68,0.12);transform-origin:top center;transform:translateY(-8px) scale(.98);opacity:0;pointer-events:none;transition:transform .22s cubic-bezier(.2,.9,.2,1),opacity .18s ease}
+.dropdown-menu.show{transform:translateY(0) scale(1);opacity:1;pointer-events:auto}
+.dropdown-item{color:#fff;padding:8px 12px;border-radius:6px;display:block;text-decoration:none}
+.dropdown-item:hover,.dropdown-item:focus{background:rgba(255,255,255,0.06);outline:none}
+
+/* Mobile: make dropdown items flow inside collapsed nav */
+@media (max-width:899px){
+    .dropdown-menu{position:static;transform:none;opacity:1;pointer-events:auto;background:transparent;padding:0;box-shadow:none}
+    .nav-item.dropdown > .dropdown-item{padding:10px 0}
+    .dropdown-caret{display:none}
+}
+
+/* Small accessibility helper: focus state */
+.nav-link:focus,.dropdown-item:focus{outline:2px solid rgba(255,255,255,0.12);outline-offset:2px}
+
+/* Desktop: show submenu on hover/focus (like the example provided) */
+@media (min-width:900px){
+  .navbar-nav .nav-item.dropdown:hover > .dropdown-menu,
+  .navbar-nav .nav-item.dropdown:focus-within > .dropdown-menu{
+    transform:translateY(0) scale(1);
+    opacity:1;
+    pointer-events:auto;
+  }
+}

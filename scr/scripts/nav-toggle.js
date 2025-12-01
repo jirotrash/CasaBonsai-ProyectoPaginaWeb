@@ -20,9 +20,27 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // close menu when clicking a nav link (mobile friendly)
+  // but ignore links that open a dropdown (we want the submenu to open in-panel)
   document.querySelectorAll('.navbar .collapse a.nav-link').forEach(function (link) {
     link.addEventListener('click', function () {
+      // if this link is a dropdown toggle or inside a dropdown, do not auto-close
+      if (link.classList.contains('dropdown-toggle') || link.closest('.nav-item.dropdown')) return;
       const navbar = link.closest('.navbar');
+      if (!navbar) return;
+      navbar.classList.remove('open');
+      const btn = navbar.querySelector('.navbar-toggler');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+      const targetSelector = btn && (btn.getAttribute('data-bs-target') || btn.getAttribute('data-target') || '#navbarNav');
+      const target = document.querySelector(targetSelector);
+      if (target) target.setAttribute('aria-hidden', 'true');
+      document.documentElement.classList.remove('nav-open');
+    });
+  });
+
+  // close panel when clicking a dropdown item inside the collapsed menu (mobile)
+  document.querySelectorAll('.navbar .collapse .dropdown-item').forEach(function(item){
+    item.addEventListener('click', function(){
+      const navbar = item.closest('.navbar');
       if (!navbar) return;
       navbar.classList.remove('open');
       const btn = navbar.querySelector('.navbar-toggler');
