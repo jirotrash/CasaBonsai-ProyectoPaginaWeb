@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* admin-min.css — estilo base para panel admin */
 :root{--admin-bg:#dff0df;--admin-text:#222;--admin-accent:#1b5e20;--admin-muted:#6b7d6b}
 /* fondo verde ligeramente más marcado para mejorar presencia visual manteniendo contraste */
@@ -19,6 +20,20 @@ html,body{margin:0;padding:0;font-family:Segoe UI,Arial,Helvetica,sans-serif;bac
 	.admin-tabs{gap:8px}
 	.admin-tabs-right .logout-btn{padding:6px 8px}
 }
+=======
+/* admin-min.css — muy sencillo */
+.root{ }
+:root{--admin-bg:#ffffff;--admin-text:#222;--admin-accent:#2f6b3a;--admin-muted:#6b7d6b}
+/* admin-min.css — muy sencillo */
+.root{ }
+:root{--admin-bg:#ffffff;--admin-text:#222;--admin-accent:#2f6b3a;--admin-muted:#6b7d6b}
+html,body{margin:0;padding:0;font-family:Segoe UI,Arial,Helvetica,sans-serif;background:var(--admin-bg);color:var(--admin-text)}
+.container{width:100%;max-width:none;margin:0;padding:28px 36px}
+.admin-tabs-wrap{padding:10px}
+.admin-tabs{list-style:none;margin:0;padding:0;display:flex;gap:8px}
+.admin-tabs .tab a{display:inline-block;padding:6px 10px;border-radius:6px;color:var(--admin-text);text-decoration:none;border:1px solid transparent}
+.admin-tabs .tab.active a{background:var(--admin-accent);color:#fff}
+>>>>>>> f8bb86c551ffde9d290751c388ec6e8b7868f4ca
 .card{background:#fff;border:1px solid #eee;padding:14px;border-radius:8px}
 .btn{padding:6px 10px;border-radius:6px}
 .header-title{text-align:center;margin:18px 0}

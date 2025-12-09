@@ -122,6 +122,7 @@ CREATE TABLE IF NOT EXISTS `residente` (
   CONSTRAINT `fk_residente_creado_por` FOREIGN KEY (`creado_por`) REFERENCES `usuario`(`id_usuario`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+<<<<<<< HEAD
 -- Tabla proveedores
 CREATE TABLE IF NOT EXISTS `proveedores` (
   `id_proveedor` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -151,6 +152,8 @@ CREATE TABLE IF NOT EXISTS `inventario_movimientos` (
   CONSTRAINT `fk_im_proveedor` FOREIGN KEY (`id_proveedor`) REFERENCES `proveedores`(`id_proveedor`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+=======
+>>>>>>> f8bb86c551ffde9d290751c388ec6e8b7868f4ca
 -- Rehabilitar comprobación de claves foráneas (se asumió creación previa de tablas)
 SET FOREIGN_KEY_CHECKS = 1;
 

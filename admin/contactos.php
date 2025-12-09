@@ -4,7 +4,11 @@ require_admin();
 $message='';
 // include minimal header (el header compartido fue removido)
 $title = 'Admin - Contactos';
+<<<<<<< HEAD
 echo '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' . htmlspecialchars($title) . '</title><link rel="stylesheet" href="../scr/styles/styles.css"><link rel="stylesheet" href="inc/tabs.css"><link rel="stylesheet" href="inc/admin-style.css"></head><body>';
+=======
+echo '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' . htmlspecialchars($title) . '</title><link rel="stylesheet" href="/casabonsai/scr/styles/styles.css"><link rel="stylesheet" href="/casabonsai/admin/inc/tabs.css"><link rel="stylesheet" href="/casabonsai/admin/inc/admin-style.css"></head><body>';
+>>>>>>> f8bb86c551ffde9d290751c388ec6e8b7868f4ca
 include __DIR__ . '/inc/tabs.php';
 echo '<div class="container py-4">';
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])){

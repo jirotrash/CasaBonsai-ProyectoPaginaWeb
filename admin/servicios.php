@@ -61,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 }
 
+<<<<<<< HEAD
 // Manejo de eliminación simple (si se envía `delete_id`)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
   $delId = $_POST['delete_id'];
@@ -73,6 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
   }
 }
 
+=======
+>>>>>>> f8bb86c551ffde9d290751c388ec6e8b7868f4ca
 // Listado
 $selectCols = [$idCol];
 if ($titleCol) $selectCols[] = $titleCol;
@@ -117,6 +120,7 @@ try {
                   <button type="submit" class="btn action-btn-delete btn-sm">Delete</button>
                 </form>
                 </td>
+<<<<<<< HEAD
               </tr>
             <?php endforeach; ?>
           </tbody>
@@ -134,3 +138,6 @@ try {
 </html>
 
 <?php
+=======
+  <?php echo '</div></body></html>'; ?>
+>>>>>>> f8bb86c551ffde9d290751c388ec6e8b7868f4ca

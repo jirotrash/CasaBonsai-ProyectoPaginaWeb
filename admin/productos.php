@@ -8,6 +8,7 @@ $title = 'Admin - Productos';
 echo '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' . htmlspecialchars($title) . '</title><link rel="stylesheet" href="inc/admin-min.css"><link rel="stylesheet" href="inc/tabs.css"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous"></head><body>';
 include __DIR__ . '/inc/tabs.php';
 echo '<div class="container py-4">';
+<<<<<<< HEAD
 // estilos específicos para mejorar el aspecto del listado de productos
 echo '<style>
   body { background:#f6f6f2; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; }
@@ -24,6 +25,8 @@ echo '<style>
   .modal .modal-content { border-radius:8px; }
   .modal .form-label { font-weight:600; }
 </style>';
+=======
+>>>>>>> f8bb86c551ffde9d290751c388ec6e8b7868f4ca
 
 // Detectar columnas disponibles en `producto`
 $cols = [];
@@ -370,6 +373,7 @@ try {
           row.style.display = text.indexOf(q) === -1 ? 'none' : '';
         });
       });
+<<<<<<< HEAD
         // focus en el campo Nombre cuando se abre el modal Agregar
         var addModalEl = document.getElementById('addModal');
         if (addModalEl) {
@@ -378,6 +382,8 @@ try {
             if (first) first.focus();
           });
         }
+=======
+>>>>>>> f8bb86c551ffde9d290751c388ec6e8b7868f4ca
 
       // cuando el formulario superior se envíe (bulkTopForm), copiar ids seleccionados
       var topForm = document.getElementById('bulkTopForm');
@@ -403,5 +409,8 @@ try {
       }
     });
   </script>
+<<<<<<< HEAD
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+=======
+>>>>>>> f8bb86c551ffde9d290751c388ec6e8b7868f4ca
 <?php echo '</div></body></html>'; ?>

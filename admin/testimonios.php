@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 require __DIR__ . '/auth.php';
 require_admin();
@@ -32,6 +33,23 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete'])){
 }
 
 // Detectar columnas
+=======
+              <tr>
+                <td><?php echo e($t[$idCol] ?? ''); ?></td>
+                <td><?php echo e($t['nombre'] ?? ''); ?></td>
+                <td><?php echo e($t['mensaje'] ?? ''); ?></td>
+                <td class="actions">
+                  <a href="manage.php?table=testimonio&edit=<?php echo e($t[$idCol]); ?>" class="btn action-btn-edit btn-sm">Edit</a>
+                  <form method="post" class="d-inline" onsubmit="return confirm('Eliminar este testimonio?');">
+                    <input type="hidden" name="csrf_token" value="<?php echo e($_SESSION['csrf_token']); ?>">
+                    <input type="hidden" name="delete_id" value="<?php echo e($t[$idCol]); ?>">
+                    <button type="submit" class="btn action-btn-delete btn-sm">Delete</button>
+                  </form>
+                </td>
+              </tr>
+    $message = 'Testimonio eliminado.';
+}
+>>>>>>> f8bb86c551ffde9d290751c388ec6e8b7868f4ca
 $cols = [];
 try {
   $colsStmt = $pdo->query("SHOW COLUMNS FROM testimonio");
@@ -71,13 +89,21 @@ try {
           <td><?php echo e($it[$nameCol] ?? ($it['nombre'] ?? '')); ?></td>
           <td><?php echo e($it[$msgCol] ?? ($it['mensaje'] ?? '')); ?></td>
           <td><?php echo e($it[$pubCol] ?? ($it['publicado'] ?? '')); ?></td>
+<<<<<<< HEAD
           <td class="actions">
             <a href="manage.php?table=testimonio&edit=<?php echo e($it[$idCol] ?? ($it['id_testimonio'] ?? '')); ?>" class="btn action-btn-edit btn-sm">Edit</a>
             <a class="btn action-btn-delete btn-sm" href="?delete=<?php echo e($it[$idCol] ?? ($it['id_testimonio'] ?? '')); ?>" onclick="return confirm('Eliminar?')">Delete</a>
           </td>
+=======
+          <td><a class="danger" href="?delete=<?php echo e($it[$idCol] ?? ($it['id_testimonio'] ?? '')); ?>" onclick="return confirm('Eliminar?')">Eliminar</a></td>
+>>>>>>> f8bb86c551ffde9d290751c388ec6e8b7868f4ca
         </tr>
       <?php endforeach; ?>
     </tbody></table>
     <?php else: ?><p class="muted-small">No hay testimonios.</p><?php endif; ?>
   </div></div>
+<<<<<<< HEAD
 <?php echo '</div></body></html>'; ?>
+=======
+  <?php echo '</div></body></html>'; ?>
+>>>>>>> f8bb86c551ffde9d290751c388ec6e8b7868f4ca

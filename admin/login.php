@@ -2,9 +2,18 @@
 require __DIR__ . '/auth.php';
 
 $message = '';
+<<<<<<< HEAD
 if (empty($_SESSION['csrf'])) $_SESSION['csrf'] = bin2hex(random_bytes(16));
 $csrf = $_SESSION['csrf'];
 
+=======
+// CSRF token
+if (empty($_SESSION['csrf'])) $_SESSION['csrf'] = bin2hex(random_bytes(16));
+$csrf = $_SESSION['csrf'];
+
+// allow optional redirect back URL via ?r=
+// default to the admin index in the same folder (relative) so it works when the site is under /Pagina
+>>>>>>> f8bb86c551ffde9d290751c388ec6e8b7868f4ca
 $redirect = 'index.php';
 if (!empty($_GET['r'])) {
   // very small sanitization: allow only relative internal paths
@@ -60,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
       <div class="mb-3">
         <label class="form-label small">Contraseña</label>
         <input name="pass" type="password" class="form-control" required />
-      </div>
+      < /div>
       <div class="d-flex justify-content-between align-items-center">
         <button class="btn btn-success" type="submit">Entrar</button>
         <a href="../index.html" class="text-success small">Volver al sitio</a>

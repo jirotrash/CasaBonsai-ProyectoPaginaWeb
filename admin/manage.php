@@ -548,10 +548,18 @@ function e($v){ return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8'); }
       <div class="toolbar mb-3 d-flex align-items-center justify-content-between">
         <div class="left d-flex align-items-center">
           <?php
+<<<<<<< HEAD
             // usar rutas relativas para evitar problemas con el DocumentRoot o subcarpetas
             $backUrl = 'index.php';
             if (!empty($table)) {
               $backUrl = 'manage.php?table=' . urlencode($table);
+=======
+            $backUrl = '/../admin/index.php';
+            if (!empty(
+                $table
+            )) {
+              $backUrl = '/../admin/manage.php?table=' . urlencode($table);
+>>>>>>> f8bb86c551ffde9d290751c388ec6e8b7868f4ca
             }
           ?>
           <a href="<?php echo e($backUrl); ?>" class="btn btn-outline-secondary btn-sm me-3">Volver</a>
@@ -740,6 +748,7 @@ function e($v){ return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8'); }
           </div>
         <?php else: ?>
           <div class="row">
+<<<<<<< HEAD
             <?php
               // preparar lista de productos y proveedores para selects si existen
               $products = [];
@@ -754,6 +763,9 @@ function e($v){ return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8'); }
               } catch (Exception $ex) { /* tabla proveedores puede no existir */ }
 
               foreach($colsOrdered as $c):
+=======
+            <?php foreach($colsOrdered as $c):
+>>>>>>> f8bb86c551ffde9d290751c388ec6e8b7868f4ca
               $f = $c['Field'];
               if ($f === $idCol && !$editRow) continue;
               if (stripos($c['Type'],'timestamp') !== false && strpos($c['Default'] ?? '', 'CURRENT_TIMESTAMP') !== false) continue;
@@ -762,6 +774,7 @@ function e($v){ return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8'); }
             ?>
               <div class="col-md-6 mb-3">
                 <label class="form-label small"><?php echo e($label); ?></label>
+<<<<<<< HEAD
                 <?php
                   // Renderizar selects para claves foráneas conocidas
                   if (in_array($f, ['id_producto','producto_id'])): ?>
@@ -779,6 +792,9 @@ function e($v){ return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8'); }
                       <?php endforeach; ?>
                     </select>
                 <?php elseif (preg_match('/char|varchar|text/i', $c['Type'])): ?>
+=======
+                <?php if (preg_match('/char|varchar|text/i', $c['Type'])): ?>
+>>>>>>> f8bb86c551ffde9d290751c388ec6e8b7868f4ca
                   <textarea name="<?php echo e($f); ?>" class="form-control" rows="3"><?php echo e($val); ?></textarea>
                 <?php else: ?>
                   <input name="<?php echo e($f); ?>" class="form-control" value="<?php echo e($val); ?>" />
